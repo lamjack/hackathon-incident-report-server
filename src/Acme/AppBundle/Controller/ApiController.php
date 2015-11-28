@@ -23,6 +23,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class ApiController
+ * @package Acme\AppBundle\Controller
+ */
 class ApiController extends Controller
 {
     /**
@@ -83,6 +87,40 @@ class ApiController extends Controller
 //            ));
 
             return $this->createSuccessJsonResponse();
+        } catch (\RuntimeException $e) {
+            return $this->createErrorJsonResponse(array('message' => $e->getMessage()));
+        }
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function submitAction(Request $request)
+    {
+        $firebase = $this->getFirebase();
+        $webPath = realpath($this->container->get('kernel')->getRootDir() . '/../web');
+        $saveFolder = 'uploads' . DIRECTORY_SEPARATOR . date('Y-m');
+        try {
+            if ($request->files->has('image')) {
+                /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
+                $file = $request->files->get('image');
+                $filename = time() . rand(100000, 999999) . '.' . strtolower($file->getClientOriginalExtension());
+                $file->move(sprintf('%s/%s/', $webPath, $saveFolder), $filename);
+                $image = DIRECTORY_SEPARATOR . $saveFolder . DIRECTORY_SEPARATOR . $filename;
+                $data = array(
+                    'media_url' => $image
+                );
+                foreach ($request->request->getIterator() as $k => $v) {
+                    $data[$k] = $v;
+                }
+                $events = $firebase->getReference('data/events');
+                $event = array_merge($data, array('timestamp' => time()));
+                $events->push($event);
+                return $this->createSuccessJsonResponse();
+            }
+            throw new \RuntimeException('images is not exist');
         } catch (\RuntimeException $e) {
             return $this->createErrorJsonResponse(array('message' => $e->getMessage()));
         }

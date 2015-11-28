@@ -15,3 +15,9 @@ acme.app.get:
     defaults:
         _controller: "AcmeAppBundle:Api:get"
     methods: [GET]
+
+acme.app.app_post:
+    path: /submit/event
+    defaults:
+        _controller: "AcmeAppBundle:Api:submit"
+    methods: [POST]

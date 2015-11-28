@@ -150,7 +150,11 @@ class ApiController extends Controller
             'status' => $status,
             'data' => $data
         ));
+        
+        $response->headers->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
         $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, PATCH, OPTIONS');
+
         return $response;
     }
 }

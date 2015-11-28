@@ -15,6 +15,7 @@
 
 namespace Acme\AppBundle\Controller;
 
+use Kreait\Firebase\Query;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -62,7 +63,7 @@ class ApiController extends Controller
                 throw new \RuntimeException(json_last_error_msg());
             }
             $events = $firebase->getReference('data/events');
-            $events->push($data);
+            $events->push(array_merge($data, array('timestamp' => time())));
             return new JsonResponse(array('status' => true));
 
         } catch (\RuntimeException $e) {
@@ -80,6 +81,9 @@ class ApiController extends Controller
         $firebase = $this->getFirebase();
         try {
             $events = $firebase->getReference('data/events');
+            $query = new Query();
+            $query
+                ->orderByChildKey('timestamp');
             return $this->createSuccessJsonResponse(array('events' => $events->getData()));
         } catch (\RuntimeException $e) {
             return $this->createErrorJsonResponse(array('message' => $e->getMessage()));

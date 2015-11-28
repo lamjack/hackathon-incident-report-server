@@ -17,7 +17,6 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-            new Wiz\ResqueBundle\WizResqueBundle(),
             new Acme\AppBundle\AcmeAppBundle(),
             new Kreait\FirebaseBundle\KreaitFirebaseBundle(),
         );

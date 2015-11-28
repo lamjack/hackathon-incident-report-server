@@ -18,6 +18,7 @@ namespace Acme\AppBundle\Controller;
 use Acme\AppBundle\Jobs\EventPostJob;
 use Kreait\Firebase\Query;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Network\Curl;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,10 +77,10 @@ class ApiController extends Controller
             $event = array_merge($data, array('timestamp' => time()));
             $events->push($event);
 
-            //$resque = $this->get('wiz_resque.service.resque');
-            //$job = new EventPostJob();
-            //$job->args['json'] = json_encode($event);
-            //$resque->enqueue($job);
+//            $curl = new Curl();
+//            $curl->post('http://192.168.10.94:5000/incident', $data, array(
+//                'json' => true
+//            ));
 
             return $this->createSuccessJsonResponse();
         } catch (\RuntimeException $e) {

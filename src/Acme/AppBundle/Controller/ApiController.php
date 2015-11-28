@@ -15,6 +15,7 @@
 
 namespace Acme\AppBundle\Controller;
 
+use Acme\AppBundle\Jobs\EventPostJob;
 use Kreait\Firebase\Query;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,6 +28,10 @@ class ApiController extends Controller
      * @ApiDoc(
      *     description="Media upload"
      * )
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
      */
     public function uploadAction(Request $request)
     {
@@ -46,13 +51,18 @@ class ApiController extends Controller
 
             $it->next();
         }
-        return new JsonResponse(array('status' => true, 'data' => $files));
+
+        return $this->createSuccessJsonResponse(array('files' => $files));
     }
 
     /**
      * @ApiDoc(
      *     description="Post event"
      * )
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
      */
     public function postAction(Request $request)
     {
@@ -63,9 +73,15 @@ class ApiController extends Controller
                 throw new \RuntimeException(json_last_error_msg());
             }
             $events = $firebase->getReference('data/events');
-            $events->push(array_merge($data, array('timestamp' => time())));
-            return new JsonResponse(array('status' => true));
+            $event = array_merge($data, array('timestamp' => time()));
+            $events->push($event);
 
+            $resque = $this->get('wiz_resque.service.resque');
+            $job = new EventPostJob();
+            $job->args['json'] = json_encode($event);
+            $resque->enqueue($job);
+
+            return $this->createSuccessJsonResponse();
         } catch (\RuntimeException $e) {
             return $this->createErrorJsonResponse(array('message' => $e->getMessage()));
         }
@@ -75,6 +91,10 @@ class ApiController extends Controller
      * @ApiDoc(
      *     description="Get event data"
      * )
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
      */
     public function getAction(Request $request)
     {
@@ -103,9 +123,9 @@ class ApiController extends Controller
      *
      * @return JsonResponse
      */
-    protected function createErrorJsonResponse($data = array())
+    protected function createSuccessJsonResponse($data = array())
     {
-        return new JsonResponse(array('status' => false, 'data' => $data));
+        return $this->createJsonResponse(true, $data);
     }
 
     /**
@@ -113,8 +133,24 @@ class ApiController extends Controller
      *
      * @return JsonResponse
      */
-    protected function createSuccessJsonResponse($data = array())
+    protected function createErrorJsonResponse($data = array())
     {
-        return new JsonResponse(array('status' => true, 'data' => $data));
+        return $this->createJsonResponse(false, $data);
+    }
+
+    /**
+     * @param $status
+     * @param array $data
+     *
+     * @return JsonResponse
+     */
+    protected function createJsonResponse($status, $data = array())
+    {
+        $response = new JsonResponse(array(
+            'status' => $status,
+            'data' => $data
+        ));
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
     }
 }

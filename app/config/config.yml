@@ -84,3 +84,10 @@ wiz_resque:
 
 nelmio_api_doc:
     name: "Hackathon incident report"
+
+kreait_firebase:
+    connections:
+        main:
+            scheme: https
+            host: incident-report.firebaseio.com
+            secret: 6W2TbLm1piTJk0Il3njy93PCnyWpHshSqyPlRLxD

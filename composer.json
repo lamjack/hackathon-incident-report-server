@@ -18,10 +18,10 @@
         "sensio/distribution-bundle": "~4.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
-        "gos/web-socket-bundle": "1.6.1",
         "nelmio/api-doc-bundle": "2.10.3",
         "jacklam/wiz-resque-bundle": "1.0.x-dev",
-        "kreait/firebase-bundle": "~0.4"
+        "kreait/firebase-bundle": "~0.4",
+        "jacklam/php-tools": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

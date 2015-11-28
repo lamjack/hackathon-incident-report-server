@@ -14,12 +14,26 @@
  */
 namespace Acme\AppBundle\Jobs;
 
+use Network\Curl;
 use Wiz\ResqueBundle\Job\ContainerAwareJob;
 
+/**
+ * Class EventPostJob
+ * @package Acme\AppBundle\Jobs
+ */
 class EventPostJob extends ContainerAwareJob
 {
+    /**
+     * @param $args
+     */
     public function run($args)
     {
-        // TODO: Implement run() method.
+        $json = $args['json'];
+
+        try {
+            $curl = new Curl();
+        } catch (\Exception $e) {
+
+        }
     }
 }

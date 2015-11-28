@@ -76,10 +76,10 @@ class ApiController extends Controller
             $event = array_merge($data, array('timestamp' => time()));
             $events->push($event);
 
-            $resque = $this->get('wiz_resque.service.resque');
-            $job = new EventPostJob();
-            $job->args['json'] = json_encode($event);
-            $resque->enqueue($job);
+            //$resque = $this->get('wiz_resque.service.resque');
+            //$job = new EventPostJob();
+            //$job->args['json'] = json_encode($event);
+            //$resque->enqueue($job);
 
             return $this->createSuccessJsonResponse();
         } catch (\RuntimeException $e) {

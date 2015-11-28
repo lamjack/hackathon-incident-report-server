@@ -88,8 +88,3 @@ kreait_firebase:
             scheme: https
             host: incident-report.firebaseio.com
             secret: 6W2TbLm1piTJk0Il3njy93PCnyWpHshSqyPlRLxD
-
-gos_web_socket:
-    server:
-        port: 10080
-        host: 127.0.0.1

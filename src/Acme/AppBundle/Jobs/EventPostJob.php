@@ -30,8 +30,13 @@ class EventPostJob extends ContainerAwareJob
     {
         $json = $args['json'];
 
+        $data = json_decode($json, true);
+
         try {
             $curl = new Curl();
+            $curl->post('http://192.168.10.94:5000/incident', $data, array(
+                'json' => true
+            ));
         } catch (\Exception $e) {
 
         }

@@ -70,7 +70,7 @@ class ApiController extends Controller
         $firebase = $this->getFirebase();
         try {
             if (json_last_error()) {
-                throw new \RuntimeException(json_last_error_msg());
+                throw new \RuntimeException('json error');
             }
             $events = $firebase->getReference('data/events');
             $event = array_merge($data, array('timestamp' => time()));
@@ -150,7 +150,7 @@ class ApiController extends Controller
             'status' => $status,
             'data' => $data
         ));
-        
+
         $response->headers->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
         $response->headers->set('Access-Control-Allow-Origin', '*');
         $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, PATCH, OPTIONS');

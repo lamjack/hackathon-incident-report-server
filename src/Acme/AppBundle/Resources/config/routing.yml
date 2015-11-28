@@ -1,0 +1,17 @@
+acme.app.upload:
+    path: /media/upload
+    defaults:
+        _controller: "AcmeAppBundle:Api:upload"
+    methods: [POST]
+
+acme.app.post:
+    path: /post/event
+    defaults:
+        _controller: "AcmeAppBundle:Api:post"
+    methods: [POST]
+
+acme.app.get:
+    path: /get/event
+    defaults:
+        _controller: "AcmeAppBundle:Api:get"
+    methods: [GET]

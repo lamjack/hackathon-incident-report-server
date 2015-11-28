@@ -20,7 +20,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "nelmio/api-doc-bundle": "2.10.3",
         "kreait/firebase-bundle": "~0.4",
-        "jacklam/php-tools": "dev-master"
+        "jacklam/php-tools": "dev-master",
+        "gos/web-socket-bundle": "~1.6"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

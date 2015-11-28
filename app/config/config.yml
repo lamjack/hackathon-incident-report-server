@@ -78,10 +78,7 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
-
-wiz_resque:
-    prefix: %project_prefix%
-
+    
 nelmio_api_doc:
     name: "Hackathon incident report"
 
